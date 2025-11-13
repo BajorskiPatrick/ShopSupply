@@ -23,7 +23,7 @@ const OrderHistory = () => {
     }, [auth])
 
     const formatItems = (items) => {
-        return items.map((item) => `${item.name} x ${item.quantity}`).join(', ');
+        return items.map((item) => `${item.name} x ${item.quantity} </br>`);
     }
 
     const formatDate = (date) => {
@@ -48,7 +48,7 @@ const OrderHistory = () => {
     return (
         <div className="orders-history-container">
             <h2 className="mb-2 text-light">
-                All Orders
+                {auth.role === "ROLE_USER" ? "Your Orders" : "All Orders"}
             </h2>
             <div className="table-responsive">
                 <table className="table table-striped table-hover">

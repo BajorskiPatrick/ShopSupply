@@ -1,7 +1,5 @@
-import axios from "axios";
+import api from './Api.js';
 
-// ZMIEŃ NAZWĘ z 'createRazorpayOrder' na 'createCheckoutSession'
 export const createCheckoutSession = async (data) => {
-    // ZMIEŃ ENDPOINT z '/createOrder' na '/create-checkout-session'
-    return await axios.post('http://localhost:8080/api/v1.0/payments/create-checkout-session', data, {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
+    return await api.post('/payments/create-checkout-session', data, {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
 }

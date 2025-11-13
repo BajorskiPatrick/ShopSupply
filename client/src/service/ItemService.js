@@ -1,13 +1,13 @@
-import axios from "axios";
+import api from './Api.js';
 
 export const addItem = async (item) => {
-    return await axios.post('http://localhost:8080/api/v1.0/admin/items', item, {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}});
+    return await api.post('/admin/items', item, {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}});
 }
 
 export const deleteItem = async (id) => {
-    return await axios.delete(`http://localhost:8080/api/v1.0/admin/items/${id}`, {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}});
+    return await api.delete(`/admin/items/${id}`, {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}});
 }
 
 export const fetchItems = async () => {
-    return axios.get('http://localhost:8080/api/v1.0/items', {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}});
+    return api.get('/items', {headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}});
 }

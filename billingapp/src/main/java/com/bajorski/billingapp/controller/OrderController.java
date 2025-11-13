@@ -19,7 +19,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping
+    @PostMapping("/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) {
         OrderResponse createdOrder = orderService.createOrder(request);
 
@@ -31,12 +31,12 @@ public class OrderController {
         return ResponseEntity.created(location).body(createdOrder);
     }
 
-    @GetMapping("admin/orders")
+    @GetMapping("/admin/orders")
     public ResponseEntity<List<OrderResponse>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @GetMapping("orders/my-orders")
+    @GetMapping("/orders/my-orders")
     public ResponseEntity<List<OrderResponse>> getUserOrders() {
         try {
             List<OrderResponse> order = orderService.getUserOrders();
@@ -46,7 +46,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("orders/{orderId}")
+    @GetMapping("/orders/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable String orderId) {
         try {
             OrderResponse order = orderService.getOrder(orderId);
@@ -56,7 +56,7 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("orders/{orderId}")
+    @DeleteMapping("/orders/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
          try {
              orderService.deleteOrder(orderId);

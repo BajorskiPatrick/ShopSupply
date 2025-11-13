@@ -5,6 +5,7 @@ import com.bajorski.billingapp.io.CategoryResponse;
 import com.bajorski.billingapp.service.impl.CategoryServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

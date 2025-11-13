@@ -3,18 +3,25 @@ import {assets} from "../../assets/assets.js";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import {AppContext} from "../../context/AppContext.jsx";
+import { logout as logoutService } from "../../service/AuthService.js";
 
 const Menubar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const {auth, setAuthData} = useContext(AppContext);
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        setAuthData(null, null);
-        navigate("/login");
-        window.location.reload();
+    const logout = async () => {
+        try {
+            await logoutService();
+        } catch (error) {
+            console.error("Error during logout", error);
+        } finally {
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+            setAuthData(null, null);
+            navigate("/login");
+            window.location.reload();
+        }
     }
 
     const isActive = (path) => {
