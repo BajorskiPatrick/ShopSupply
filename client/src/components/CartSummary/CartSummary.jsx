@@ -10,15 +10,13 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
     const {cartItems, clearCart} = useContext(AppContext);
 
     const [isProcessing, setIsProcessing] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState('cash');
 
     const [orderDetails, setOrderDetails] = useState(null);
-
     const [showPopup, setShowPopup] = useState(false);
 
     const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
     const tax = totalAmount * 0.01;
-
     const grandTotal = totalAmount + tax;
 
     const clearAll = () => {
@@ -27,16 +25,11 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
         clearCart();
     }
 
-    const placeOrder = () => {
-        setShowPopup(true);
-        clearAll();
-    }
-
     const handlePrintReceipt = () => {
         window.print();
     }
 
-    const completePayment = async (paymentMode) => {
+    const handlePlaceOrder = async () => {
         if (!customerName || !phoneNumber) {
             toast.error("Please enter customer details!");
             return;
@@ -55,7 +48,7 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
             subtotal: totalAmount,
             tax,
             grandTotal,
-            paymentMethod: paymentMode.toUpperCase()
+            paymentMethod: paymentMethod.toUpperCase()
         }
 
         try {
@@ -63,15 +56,20 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
             const savedData = response.data;
 
             if (response.status !== 201) {
-                toast.error("Payment processing failed: " + response.status);
+                toast.error("Order creation failed: " + response.status);
+                setIsProcessing(false);
                 return;
             }
 
-            if (paymentMode === "cash") {
-                toast.success("Cash received!");
+            if (paymentMethod === "cash") {
+                toast.success("Cash payment successful!");
                 setOrderDetails(savedData);
+                setShowPopup(true); // Pokaż popup
+                //
+                // !!! USUNĘLIŚMY STĄD clearAll() !!!
+                //
             }
-            else if (paymentMode === "card") {
+            else if (paymentMethod === "card") {
                 const checkoutData = {
                     ...orderData,
                     orderId: savedData.orderId
@@ -80,6 +78,8 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
                 const stripeResponse = await createCheckoutSession(checkoutData);
 
                 if (stripeResponse.data && stripeResponse.data.url) {
+                    // Zapisz orderId przed przekierowaniem do Stripe
+                    sessionStorage.setItem('pendingOrderId', savedData.orderId);
                     window.location.href = stripeResponse.data.url;
                 } else {
                     toast.error("Could not initiate Stripe payment.");
@@ -90,13 +90,16 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
             console.error(error);
             toast.error("Payment processing failed: " + error.message);
         } finally {
-            setIsProcessing(false);
+            if (paymentMethod === "cash") {
+                setIsProcessing(false);
+            }
         }
     }
 
     return (
         <div className="mt-2">
             <div className="cart-summary-details">
+                {/* ... (renderowanie kwot - bez zmian) ... */}
                 <div className="d-flex justify-content-between mb-2">
                     <span className="text-light">Items: </span>
                     <span className="text-light">&#36;{totalAmount.toFixed(2)}</span>
@@ -111,28 +114,35 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
                     <span className="text-light">&#36;{grandTotal.toFixed(2)}</span>
                 </div>
             </div>
-            <div className="d-flex gap-3">
-                <button className="btn btn-success flex-grow-1"
-                        onClick={() => completePayment("cash")}
-                        disabled={isProcessing}
+
+            <label className="text-light mb-2">Select Payment Method:</label>
+            <div className="d-flex gap-3 mb-3 btn-group">
+                <button
+                    className={`btn flex-grow-1 ${paymentMethod === 'cash' ? 'btn-success' : 'btn-outline-success'}`}
+                    onClick={() => setPaymentMethod('cash')}
+                    disabled={isProcessing}
                 >
-                    {isProcessing ? "Processing.." : "Cash"}
+                    Cash
                 </button>
-                <button className="btn btn-primary flex-grow-1"
-                        onClick={() => completePayment("card")}
-                        disabled={isProcessing}
+                <button
+                    className={`btn flex-grow-1 ${paymentMethod === 'card' ? 'btn-primary' : 'btn-outline-primary'}`}
+                    onClick={() => setPaymentMethod('card')}
+                    disabled={isProcessing}
                 >
-                    {isProcessing ? "Processing.." : "Card"}
+                    Card
                 </button>
             </div>
+
             <div className="d-flex gap-3 mt-3">
-                <button className="btn btn-warning flex-grow-1"
-                        onClick={placeOrder}
-                        disabled={isProcessing || !orderDetails}
+                <button
+                    className="btn btn-warning flex-grow-1"
+                    onClick={handlePlaceOrder}
+                    disabled={isProcessing}
                 >
-                    Place Order
+                    {isProcessing ? "Processing..." : "Place Order"}
                 </button>
             </div>
+
             {
                 showPopup && (
                     <ReceiptPopup
@@ -141,7 +151,11 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
                             paymentTransactionId: orderDetails.paymentDetails?.paymentTransactionId,
                             status: orderDetails.paymentDetails?.status,
                         }}
-                        onClose={() => setShowPopup(false)}
+                        // !!! DODAJEMY clearAll() TUTAJ !!!
+                        onClose={() => {
+                            setShowPopup(false);
+                            clearAll();
+                        }}
                         onPrint={handlePrintReceipt}
                     />
                 )
