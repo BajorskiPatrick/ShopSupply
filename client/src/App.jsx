@@ -8,13 +8,22 @@ import { Route } from "react-router-dom";
 import {Toaster} from "react-hot-toast";
 import Login from "./pages/Login/Login.jsx";
 import OrderHistory from "./components/OrderHistory/OrderHistory.jsx";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {AppContext} from "./context/AppContext.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
+import {useSearchParams} from "react-router-dom";
 
 const App = () => {
     const location = useLocation();
     const {auth} = useContext(AppContext);
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        const paymentStatus = searchParams.get("payment");
+        if (paymentStatus) {
+            sessionStorage.setItem('paymentStatus', paymentStatus);
+        }
+    }, [searchParams]);
 
     const LoginRoute = ({element}) => {
         if (auth.token) {
@@ -24,14 +33,21 @@ const App = () => {
     }
 
     const ProtectedRoute = ({element, allowedRoles = []}) => {
+        const { auth, isAuthLoading } = useContext(AppContext);
+
+        if (isAuthLoading) {
+            return <div>Loading...</div>; // Lub <Spinner />
+        }
+
         if (!auth.token) {
             return <Navigate to="/login" replace />;
         }
+
         if (allowedRoles.length > 0 && !allowedRoles.includes(auth.role)) {
             return <Navigate to="/explore" replace />;
         }
         return element;
-    }
+    };
 
     return (
         <div>
@@ -42,7 +58,6 @@ const App = () => {
                 <Route path="/explore" element={<ProtectedRoute element={<Explore />} />} />
                 <Route path="/login" element={<LoginRoute element={<Login />} />} />
                 <Route path="/orders" element={<ProtectedRoute element={<OrderHistory />} />} />
-                {/*<Route path="/dashboard" element={<Dashboard />} />*/}
                 <Route path="/categories" element={<ProtectedRoute element={<ManageCategories />} allowedRoles={['ROLE_ADMIN']} />} />
                 <Route path="/users" element={<ProtectedRoute element={<ManageUsers />} allowedRoles={['ROLE_ADMIN']} />} />
                 <Route path="/items" element={<ProtectedRoute element={<ManageItems />} allowedRoles={['ROLE_ADMIN']} />} />

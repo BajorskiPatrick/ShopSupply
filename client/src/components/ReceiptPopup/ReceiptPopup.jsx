@@ -1,7 +1,10 @@
 import './ReceiptPopup.css';
 import './Print.css'
+import toast from "react-hot-toast";
 
 const ReceiptPopup = ({orderDetails, onClose, onPrint}) => {
+    toast.success('Payment completed successfully!');
+
     return (
         <div className="receipt-popup-overlay text-dark">
             <div className="receipt-popup">

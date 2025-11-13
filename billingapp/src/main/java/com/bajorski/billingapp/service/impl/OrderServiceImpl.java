@@ -97,6 +97,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderResponse getOrder(String orderId) {
+        OrderEntity retrievedOrder = orderEntityRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        return convertToResponse(retrievedOrder);
+    }
+
+    @Override
     public void deleteOrder(String orderId) {
         OrderEntity order = orderEntityRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));

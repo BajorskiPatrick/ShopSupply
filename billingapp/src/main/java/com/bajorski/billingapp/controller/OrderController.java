@@ -37,6 +37,16 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getLatestOrders());
     }
 
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable String orderId) {
+        try {
+            OrderResponse order = orderService.getOrder(orderId);
+            return ResponseEntity.ok(order);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
          try {

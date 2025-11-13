@@ -7,28 +7,70 @@ import DisplayItems from "../../components/DisplayItems/DisplayItems.jsx";
 import CustomerForm from "../../components/CustomerForm/CustomerForm.jsx";
 import CartItems from "../../components/CartItems/CartItems.jsx";
 import CartSummary from "../../components/CartSummary/CartSummary.jsx";
+import ReceiptPopup from "../../components/ReceiptPopup/ReceiptPopup.jsx";
 import toast from "react-hot-toast";
+import { getOrderById } from "../../service/OrderService.js";
 
 const Explore = () => {
-    const {categories} = useContext(AppContext);
+    const {categories, clearCart, isExploreRendered, setIsExploreRendered} = useContext(AppContext);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
 
+    const [showReceiptPopup, setShowReceiptPopup] = useState(false);
+    const [orderDetails, setOrderDetails] = useState(null);
+
     useEffect(() => {
-        const paymentStatus = searchParams.get("payment");
+        if (!isExploreRendered) {
+            return;
+        }
+
+        const paymentStatus = sessionStorage.getItem('paymentStatus');
+        const urlPaymentStatus = searchParams.get("payment");
+
+        if (urlPaymentStatus) {
+            setSearchParams({}, { replace: true });
+        }
 
         if (paymentStatus === 'success') {
-            toast.success('Payment completed successfully!');
+            const pendingOrderId = sessionStorage.getItem('pendingOrderId');
 
-            setSearchParams({}, { replace: true });
+            if (pendingOrderId) {
+                getOrderById(pendingOrderId)
+                    .then(response => {
+                        if (response.status === 200) {
+                            setOrderDetails(response.data);
+                            setShowReceiptPopup(true);
+                            sessionStorage.removeItem('pendingOrderId');
+                            sessionStorage.removeItem('paymentStatus');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching order details:', error);
+                        toast.error('Could not fetch order details');
+                    });
+            }
         } else if (paymentStatus === 'cancelled') {
             toast.error('Error while completing payment!');
 
-            setSearchParams({}, { replace: true });
+            sessionStorage.removeItem('pendingOrderId');
+            sessionStorage.removeItem('paymentStatus');
         }
-    }, [searchParams, setSearchParams]);
+    }, [isExploreRendered, searchParams, setSearchParams]);
+
+    const handleCloseReceipt = () => {
+        setShowReceiptPopup(false);
+        setOrderDetails(null);
+        setCustomerName("");
+        setPhoneNumber("");
+        setIsExploreRendered(false);
+        clearCart();
+    };
+
+    const handlePrintReceipt = () => {
+        window.print();
+    };
 
     return (
         <div className="explore-container text-light">
@@ -68,6 +110,18 @@ const Explore = () => {
                     />
                 </div>
             </div>
+
+            {showReceiptPopup && orderDetails && (
+                <ReceiptPopup
+                    orderDetails={{
+                        ...orderDetails,
+                        paymentTransactionId: orderDetails.paymentDetails?.paymentTransactionId,
+                        status: orderDetails.paymentDetails?.status,
+                    }}
+                    onClose={handleCloseReceipt}
+                    onPrint={handlePrintReceipt}
+                />
+            )}
         </div>
     )
 }

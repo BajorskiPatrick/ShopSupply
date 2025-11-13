@@ -1,4 +1,4 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useState, useCallback} from "react";
 import {fetchCategories} from "../service/CategoryService.js";
 import {fetchItems} from "../service/ItemService.js";
 
@@ -10,37 +10,49 @@ export const AppContextProvider = (props) => {
     const [items, setItems] = useState([]);
     const [auth, setAuth] = useState({token: null, role: null});
     const [cartItems, setCartItems] = useState([]);
+    const [isExploreRendered, setIsExploreRendered] = useState(false);
+    const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-    const addToCart = (item) => {
-        const existingItem = cartItems.find(cartItem => cartItem.itemId === item.itemId);
-        if (existingItem) {
-            setCartItems(cartItems.map(cartItem => cartItem.itemId === item.itemId ? {...cartItem, quantity: cartItem.quantity + 1 } : cartItem));
-        } else {
-            setCartItems([...cartItems, item]);
-        }
-    }
+    const addToCart = useCallback((item) => {
+        setCartItems(prevCartItems => {
+            const existingItem = prevCartItems.find(cartItem => cartItem.itemId === item.itemId);
+            if (existingItem) {
+                return prevCartItems.map(cartItem => cartItem.itemId === item.itemId ? {...cartItem, quantity: cartItem.quantity + 1 } : cartItem);
+            } else {
+                return [...prevCartItems, item];
+            }
+        });
+    }, []);
 
-    const clearCart = () => {
+    const clearCart = useCallback(() => {
         setCartItems([]);
-    }
+    }, []);
 
-    const removeFromCart = (itemId) => {
-        setCartItems(cartItems.filter(cartItem => cartItem.itemId !== itemId));
-    }
+    const removeFromCart = useCallback((itemId) => {
+        setCartItems(prevCartItems => prevCartItems.filter(cartItem => cartItem.itemId !== itemId));
+    }, []);
 
-    const updateQuantity = (itemId, quantity) => {
-        setCartItems(cartItems.map(cartItem => cartItem.itemId === itemId ? {...cartItem, quantity: quantity} : cartItem));
-    }
+    const updateQuantity = useCallback((itemId, quantity) => {
+        setCartItems(prevCartItems => prevCartItems.map(cartItem => cartItem.itemId === itemId ? {...cartItem, quantity: quantity} : cartItem));
+    }, []);
 
-    useEffect(() => {
-        // Sprawdź czy użytkownik jest już zalogowany (token w localStorage)
-        if (localStorage.getItem("token") && localStorage.getItem("role")) {
-            setAuthData(localStorage.getItem("token"), localStorage.getItem("role"));
-        }
+    const setAuthData = useCallback((token, role) => {
+        setAuth({token, role});
     }, []);
 
     useEffect(() => {
-        // Pobieraj dane tylko gdy użytkownik jest zalogowany
+        try {
+            if (localStorage.getItem("token") && localStorage.getItem("role")) {
+                setAuthData(localStorage.getItem("token"), localStorage.getItem("role"));
+            }
+        } catch (error) {
+            console.error("Error reading from localStorage", error);
+        } finally {
+            setIsAuthLoading(false);
+        }
+    }, [setAuthData]);
+
+    useEffect(() => {
         async function loadData() {
             if (auth.token) {
                 try {
@@ -53,12 +65,13 @@ export const AppContextProvider = (props) => {
                 }
             }
         }
-        loadData();
-    }, [auth.token]);
 
-    const setAuthData = (token, role) => {
-        setAuth({token, role});
-    }
+        if (!isAuthLoading) {
+            loadData().then( () =>
+                setIsExploreRendered(true)
+            );
+        }
+    }, [auth.token, isAuthLoading]);
 
     const contextValue = {
         categories,
@@ -71,7 +84,10 @@ export const AppContextProvider = (props) => {
         clearCart,
         cartItems,
         removeFromCart,
-        updateQuantity
+        updateQuantity,
+        isAuthLoading,
+        isExploreRendered,
+        setIsExploreRendered
     }
 
     return <AppContext.Provider value={contextValue}>{props.children}</AppContext.Provider>

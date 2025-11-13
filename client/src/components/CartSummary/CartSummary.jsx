@@ -62,12 +62,8 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
             }
 
             if (paymentMethod === "cash") {
-                toast.success("Cash payment successful!");
                 setOrderDetails(savedData);
                 setShowPopup(true); // Pokaż popup
-                //
-                // !!! USUNĘLIŚMY STĄD clearAll() !!!
-                //
             }
             else if (paymentMethod === "card") {
                 const checkoutData = {
@@ -78,7 +74,6 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
                 const stripeResponse = await createCheckoutSession(checkoutData);
 
                 if (stripeResponse.data && stripeResponse.data.url) {
-                    // Zapisz orderId przed przekierowaniem do Stripe
                     sessionStorage.setItem('pendingOrderId', savedData.orderId);
                     window.location.href = stripeResponse.data.url;
                 } else {
@@ -99,7 +94,6 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
     return (
         <div className="mt-2">
             <div className="cart-summary-details">
-                {/* ... (renderowanie kwot - bez zmian) ... */}
                 <div className="d-flex justify-content-between mb-2">
                     <span className="text-light">Items: </span>
                     <span className="text-light">&#36;{totalAmount.toFixed(2)}</span>
@@ -151,7 +145,6 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
                             paymentTransactionId: orderDetails.paymentDetails?.paymentTransactionId,
                             status: orderDetails.paymentDetails?.status,
                         }}
-                        // !!! DODAJEMY clearAll() TUTAJ !!!
                         onClose={() => {
                             setShowPopup(false);
                             clearAll();

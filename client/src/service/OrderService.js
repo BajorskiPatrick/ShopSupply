@@ -11,3 +11,7 @@ export const createOrder = async (order) => {
 export const deleteOrder = async (orderId) => {
     return await axios.delete(`http://localhost:8080/api/v1.0/orders/${orderId}`, {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
 }
+
+export const getOrderById = async (orderId) => {
+    return await axios.get(`http://localhost:8080/api/v1.0/orders/${orderId}`, {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
+}
