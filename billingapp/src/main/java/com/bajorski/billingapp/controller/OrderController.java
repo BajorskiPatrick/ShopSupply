@@ -14,7 +14,6 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -32,12 +31,22 @@ public class OrderController {
         return ResponseEntity.created(location).body(createdOrder);
     }
 
-    @GetMapping("/latest")
-    public ResponseEntity<List<OrderResponse>> getLatestOrders() {
-        return ResponseEntity.ok(orderService.getLatestOrders());
+    @GetMapping("admin/orders")
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("orders/my-orders")
+    public ResponseEntity<List<OrderResponse>> getUserOrders() {
+        try {
+            List<OrderResponse> order = orderService.getUserOrders();
+            return ResponseEntity.ok(order);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("orders/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable String orderId) {
         try {
             OrderResponse order = orderService.getOrder(orderId);
@@ -47,7 +56,7 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("/{orderId}")
+    @DeleteMapping("orders/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
          try {
              orderService.deleteOrder(orderId);

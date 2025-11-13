@@ -10,5 +10,7 @@ public interface OrderEntityRepository extends JpaRepository<OrderEntity, Long> 
 
     Optional<OrderEntity> findByOrderId(String orderId);
 
-    List<OrderEntity> findAllByOrderByCreatedAtAsc();
+    List<OrderEntity> findAllByOrderByCreatedAtDesc();
+
+    List<OrderEntity> findAllByUserEmailOrderByCreatedAtDesc(String email);
 }

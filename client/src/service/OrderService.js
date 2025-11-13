@@ -1,7 +1,11 @@
 import axios from "axios";
 
-export const latestOrders = async () => {
-    return await axios.get("http://localhost:8080/api/v1.0/orders/latest", {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
+export const allOrders = async () => {
+    return await axios.get("http://localhost:8080/api/v1.0/admin/orders", {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
+}
+
+export const userOrders = async () => {
+    return await axios.get("http://localhost:8080/api/v1.0/orders/my-orders", {headers: {'Authorization': "Bearer " + localStorage.getItem("token")}});
 }
 
 export const createOrder = async (order) => {

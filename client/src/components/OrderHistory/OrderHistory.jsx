@@ -1,15 +1,17 @@
 import './OrderHistory.css';
-import {useEffect, useState} from "react";
-import {latestOrders} from "../../service/OrderService.js";
+import {useContext, useEffect, useState} from "react";
+import {allOrders, userOrders} from "../../service/OrderService.js";
+import {AppContext} from "../../context/AppContext.jsx";
 
 const OrderHistory = () => {
+    const {auth} = useContext(AppContext);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await latestOrders();
+                const response = (auth.role === "ROLE_USER") ? await userOrders() : await allOrders();
                 setOrders(response.data);
             } catch (error) {
                 console.error(error);
@@ -18,7 +20,7 @@ const OrderHistory = () => {
             }
         }
         fetchOrders();
-    }, [])
+    }, [auth])
 
     const formatItems = (items) => {
         return items.map((item) => `${item.name} x ${item.quantity}`).join(', ');

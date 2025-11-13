@@ -2,11 +2,15 @@ package com.bajorski.billingapp.service.impl;
 
 import com.bajorski.billingapp.entity.OrderEntity;
 import com.bajorski.billingapp.entity.OrderItemEntity;
+import com.bajorski.billingapp.entity.UserEntity;
 import com.bajorski.billingapp.io.*;
 import com.bajorski.billingapp.repository.OrderEntityRepository;
+import com.bajorski.billingapp.repository.UserRepository;
 import com.bajorski.billingapp.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,9 +23,18 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderEntityRepository orderEntityRepository;
 
+    private final UserRepository userRepository;
+
     @Override
     public OrderResponse createOrder(OrderRequest request) {
         OrderEntity newOrder = convertToOrderEntity(request);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        UserEntity currentUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found for email: " + userEmail));
+        newOrder.setUser(currentUser);
 
         PaymentDetails paymentDetails = new PaymentDetails();
         paymentDetails.setStatus(
@@ -90,8 +103,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponse> getLatestOrders() {
-        return orderEntityRepository.findAllByOrderByCreatedAtAsc().stream()
+    public List<OrderResponse> getAllOrders() {
+        return orderEntityRepository.findAllByOrderByCreatedAtDesc().stream()
                 .map(this::convertToResponse)
                 .toList();
     }
@@ -102,6 +115,16 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
         return convertToResponse(retrievedOrder);
+    }
+
+    @Override
+    public List<OrderResponse> getUserOrders() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        return orderEntityRepository.findAllByUserEmailOrderByCreatedAtDesc(userEmail).stream()
+                .map(this::convertToResponse)
+                .toList();
     }
 
     @Override
