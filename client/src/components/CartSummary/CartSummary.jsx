@@ -63,7 +63,7 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
 
             if (paymentMethod === "cash") {
                 setOrderDetails(savedData);
-                setShowPopup(true); // Pokaż popup
+                setShowPopup(true);
             }
             else if (paymentMethod === "card") {
                 const checkoutData = {

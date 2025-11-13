@@ -12,8 +12,7 @@ import toast from "react-hot-toast";
 import { getOrderById } from "../../service/OrderService.js";
 
 const Explore = () => {
-    const {categories, clearCart, isExploreRendered, setIsExploreRendered} = useContext(AppContext);
-    const [selectedCategory, setSelectedCategory] = useState("");
+    const {categories, clearCart, isExploreRendered, setIsExploreRendered, selectedCategory, setSelectedCategory} = useContext(AppContext);
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
