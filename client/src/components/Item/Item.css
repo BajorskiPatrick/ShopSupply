@@ -1,0 +1,19 @@
+.item-card:hover {
+    transform: translateY(-3px);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.item-image {
+    max-width: 80px;
+    height: auto;
+    max-height: 80px;
+    aspect-ratio: 1 / 1;
+    border: 3px solid #ffffff;
+    border-radius: 10px;
+}
+
+.item-image-container {
+    position: relative;
+    margin-right: 15px;
+}

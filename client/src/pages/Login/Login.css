@@ -1,0 +1,17 @@
+.login-background {
+    min-height: 100vh;
+    background: url("../../assets/login-bg.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
+.card {
+    background-color: #cccccc;
+    max-width: 480px;
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    padding: 2rem;
+}

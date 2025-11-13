@@ -1,0 +1,11 @@
+.display-categories-container {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    top: 3px;
+}
+
+.category-component-container {
+    padding: 0 10px;
+    overflow: visible;
+}

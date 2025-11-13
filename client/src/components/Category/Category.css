@@ -1,0 +1,36 @@
+.category-container {
+    background-color: var(--bg-color);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.category-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.image-container {
+    position: relative;
+    margin-right: 15px;
+}
+
+.active-category {
+    position: absolute;
+    right: 16px;
+    top: 20px;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+
+.category-image {
+    max-width: 64px;
+    height: auto;
+    max-height: 64px;
+    aspect-ratio: 1 / 1;
+    border-radius: 10%;
+    border: 4px solid white;
+    background-color: white;
+}
