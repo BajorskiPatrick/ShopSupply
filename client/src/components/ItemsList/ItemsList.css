@@ -6,3 +6,46 @@
     border-radius: 10px;
     border: 3px solid #cccccc;
 }
+
+@media (max-width: 768px) {
+    .items-list-container .card {
+        padding: 1rem !important;
+    }
+    
+    .items-list-container .d-flex {
+        flex-wrap: wrap;
+    }
+    
+    .item-image {
+        max-width: 50px;
+        max-height: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    .items-list-container .card {
+        padding: 0.75rem !important;
+    }
+    
+    .item-image {
+        max-width: 40px;
+        max-height: 40px;
+    }
+    
+    .items-list-container h6 {
+        font-size: 0.9rem;
+    }
+    
+    .items-list-container p {
+        font-size: 0.85rem;
+    }
+    
+    .items-list-container .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .items-list-container .btn-sm span {
+        display: none;
+    }
+}

@@ -9,3 +9,23 @@
     padding: 0 10px;
     overflow: visible;
 }
+
+@media (max-width: 768px) {
+    .display-categories-container .row {
+        margin: 0;
+    }
+    
+    .category-component-container {
+        padding: 0 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-component-container {
+        padding: 0 3px;
+    }
+    
+    .display-categories-container .row.g-3 {
+        gap: 0.5rem !important;
+    }
+}

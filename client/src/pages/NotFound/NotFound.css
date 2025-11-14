@@ -11,6 +11,7 @@
 
 .not-found-content {
     max-width: 600px;
+    width: 100%;
     padding: 40px;
     background: white;
     border-radius: 10px;
@@ -46,6 +47,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 100%;
+    max-width: 200px;
 }
 
 .not-found-button:hover {
@@ -59,5 +62,32 @@
 
     .not-found-subtitle {
         font-size: 24px;
+    }
+    
+    .not-found-content {
+        padding: 30px 20px;
+    }
+    
+    .not-found-message {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .not-found-title {
+        font-size: 60px;
+    }
+
+    .not-found-subtitle {
+        font-size: 20px;
+    }
+    
+    .not-found-message {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .not-found-content {
+        padding: 20px 15px;
     }
 }

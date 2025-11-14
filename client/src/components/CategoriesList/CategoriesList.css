@@ -6,3 +6,46 @@
     border-radius: 10px;
     border: 3px solid #cccccc;
 }
+
+@media (max-width: 768px) {
+    .category-list-container .card {
+        padding: 1rem !important;
+    }
+    
+    .category-list-container .d-flex {
+        flex-wrap: wrap;
+    }
+    
+    .category-image {
+        max-width: 50px;
+        max-height: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-list-container .card {
+        padding: 0.75rem !important;
+    }
+    
+    .category-image {
+        max-width: 40px;
+        max-height: 40px;
+    }
+    
+    .category-list-container h5 {
+        font-size: 1rem;
+    }
+    
+    .category-list-container p {
+        font-size: 0.85rem;
+    }
+    
+    .category-list-container .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .category-list-container .btn-sm span {
+        display: none;
+    }
+}

@@ -1,0 +1,15 @@
+@media (max-width: 576px) {
+    .customer-form-container .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .customer-form-container label {
+        width: 100% !important;
+        margin-bottom: 5px;
+    }
+    
+    .customer-form-container input {
+        width: 100% !important;
+    }
+}

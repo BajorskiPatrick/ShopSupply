@@ -3,15 +3,28 @@
     background: url("../../assets/login-bg.jpg");
     background-size: cover;
     background-position: center center;
+    padding: 20px;
 }
 
 .card {
     background-color: #cccccc;
     max-width: 480px;
+    width: 100%;
     border: none;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
 }
 
 .card-body {
     padding: 2rem;
+}
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .login-background {
+        padding: 15px;
+    }
 }

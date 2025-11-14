@@ -1,0 +1,20 @@
+@media (max-width: 768px) {
+    .row.g-3 {
+        margin: 0;
+    }
+    
+    .row.g-3 > [class*="col-"] {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .row.g-3 > [class*="col-"] {
+        padding: 0.25rem;
+    }
+}

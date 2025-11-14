@@ -3,3 +3,18 @@
     padding: 12px;
     border-radius: 8px;
 }
+
+@media (max-width: 576px) {
+    .cart-item {
+        padding: 10px;
+    }
+    
+    .cart-item h6 {
+        font-size: 0.9rem;
+    }
+    
+    .cart-item .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+}

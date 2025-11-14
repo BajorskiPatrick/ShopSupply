@@ -1,6 +1,9 @@
+.item-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
 .item-card:hover {
     transform: translateY(-3px);
-    transition: transform 0.3s ease-in-out;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -16,4 +19,51 @@
 .item-image-container {
     position: relative;
     margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+    .item-image {
+        max-width: 60px;
+        max-height: 60px;
+    }
+    
+    .item-card h6 {
+        font-size: 0.9rem;
+    }
+    
+    .item-card p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .item-image {
+        max-width: 50px;
+        max-height: 50px;
+    }
+    
+    .item-image-container {
+        margin-right: 10px;
+    }
+    
+    .item-card {
+        padding: 0.75rem !important;
+    }
+    
+    .item-card h6 {
+        font-size: 0.85rem;
+    }
+    
+    .item-card p {
+        font-size: 0.8rem;
+    }
+    
+    .item-card .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .item-card .fs-4 {
+        font-size: 1rem !important;
+    }
 }

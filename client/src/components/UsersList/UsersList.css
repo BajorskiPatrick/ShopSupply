@@ -1,0 +1,33 @@
+@media (max-width: 768px) {
+    .users-list-container .card {
+        padding: 1rem !important;
+    }
+    
+    .users-list-container .d-flex {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .users-list-container .card {
+        padding: 0.75rem !important;
+    }
+    
+    .users-list-container h5 {
+        font-size: 1rem;
+    }
+    
+    .users-list-container p {
+        font-size: 0.85rem;
+    }
+    
+    .users-list-container .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .users-list-container .btn-sm span {
+        display: none;
+    }
+}
+

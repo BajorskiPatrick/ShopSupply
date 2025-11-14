@@ -5,6 +5,7 @@
     height: calc(100vh - 5rem);
     box-sizing: border-box;
     background-color: #2C3335;
+    flex-direction: row;
 }
 
 .left-column {
@@ -16,6 +17,8 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .right-column {
@@ -25,4 +28,38 @@
     padding: 16px;
     height: 100%;
     box-sizing: border-box;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+@media (max-width: 992px) {
+    .users-container {
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 5rem);
+    }
+    
+    .left-column {
+        flex: 1;
+        height: auto;
+        min-height: 300px;
+    }
+    
+    .right-column {
+        flex: 1;
+        height: auto;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .users-container {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .left-column,
+    .right-column {
+        padding: 12px;
+    }
 }

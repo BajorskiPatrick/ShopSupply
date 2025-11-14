@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 20px;
 }
 
 .receipt-popup {
@@ -16,7 +17,7 @@
     padding: 20px;
     border-radius: 8px;
     width: 400px;
-    max-width: 90%;
+    max-width: 100%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-height: 90vh;
     overflow-y: auto;
@@ -31,4 +32,25 @@
 .receipt-popup, .btn {
     padding: 8px 16px;
     font-size: 14px;
+}
+
+@media (max-width: 576px) {
+    .receipt-popup-overlay {
+        padding: 10px;
+    }
+    
+    .receipt-popup {
+        padding: 15px;
+        width: 100%;
+        max-height: 95vh;
+    }
+    
+    .receipt-popup, .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .cart-items-scrollable {
+        max-height: 150px;
+    }
 }

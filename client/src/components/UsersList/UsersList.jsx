@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {deleteUser} from "../../service/UserService.js";
 import toast from "react-hot-toast";
+import './UsersList.css';
 
 const UsersList = ({users, setUsers}) => {
     const [searchTerm, setSearchTerm] = useState("");

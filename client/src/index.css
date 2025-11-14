@@ -6,3 +6,32 @@
     margin: 0;
     font-family: 'Outfit', sans-serif;
 }
+
+/* Global responsive styles for forms */
+@media (max-width: 576px) {
+    .form-container {
+        padding: 1rem !important;
+    }
+    
+    .form-container .card-body {
+        padding: 1rem !important;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .form-control,
+    .form-select {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    textarea.form-control {
+        font-size: 0.9rem;
+    }
+}
