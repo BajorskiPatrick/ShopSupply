@@ -23,7 +23,9 @@ const OrderHistory = () => {
     }, [auth])
 
     const formatItems = (items) => {
-        return items.map((item) => `${item.name} x ${item.quantity} </br>`);
+        return items.map((item, index) => (
+            <div key={index}>{item.name} x {item.quantity}</div>
+        ));
     }
 
     const formatDate = (date) => {

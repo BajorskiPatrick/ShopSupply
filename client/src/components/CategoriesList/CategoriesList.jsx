@@ -3,6 +3,7 @@ import {useContext, useState} from "react";
 import {AppContext} from "../../context/AppContext.jsx";
 import {deleteCategory} from "../../service/CategoryService.js";
 import toast from "react-hot-toast";
+import {ClipLoader} from "react-spinners";
 
 const CategoriesList = () => {
     const {categories, setCategories} = useContext(AppContext);
@@ -67,16 +68,13 @@ const CategoriesList = () => {
                                     >
                                         {isLoading ? (
                                             <>
-                                                <span
-                                                    className="spinner-border spinner-border-sm"
-                                                    aria-hidden="true"
-                                                ></span>
-                                                <span className="ms-1">Deleting...</span>
+                                                <span className="ms-1">
+                                                    <ClipLoader color={"#123abc"} loading={true} size={10} />
+                                                </span>
                                             </>
                                         ) : (
                                             <>
                                                 <i className="bi bi-trash"></i>
-                                                <span className="ms-1">Delete</span>
                                             </>
                                         )}
                                     </button>

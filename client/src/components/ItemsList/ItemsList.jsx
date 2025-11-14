@@ -1,6 +1,7 @@
 import {useContext, useState} from "react";
 import {AppContext} from "../../context/AppContext.jsx";
 import {deleteItem} from "../../service/ItemService.js";
+import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import './ItemsList.css';
 
@@ -18,7 +19,7 @@ const ItemsList = () => {
         try {
             const response = await deleteItem(id);
             if (response.status !== 204) {
-                toast.error("Error deleting user: " + response.status);
+                toast.error("Error deleting item: " + response.status);
             }
 
             const deletedItem = items.filter(item => item.itemId === id)[0];
@@ -28,7 +29,7 @@ const ItemsList = () => {
             setItems(items.filter(item => item.itemId !== deletedItem.itemId))
             setCategories(updatedCategories);
 
-            toast.success("Successfully deleted user");
+            toast.success("Successfully deleted item");
         } catch (error) {
             console.error(error);
             toast.error("Error deleting user: " + error);
@@ -75,16 +76,13 @@ const ItemsList = () => {
                                     >
                                         {loading ? (
                                             <>
-                                                <span
-                                                    className="spinner-border spinner-border-sm"
-                                                    aria-hidden="true"
-                                                ></span>
-                                                <span className="ms-1">Deleting...</span>
+                                                <span className="ms-1">
+                                                    <ClipLoader color={"#123abc"} loading={true} size={10} />
+                                                </span>
                                             </>
                                         ) : (
                                             <>
                                                 <i className="bi bi-trash"></i>
-                                                <span className="ms-1">Delete</span>
                                             </>
                                         )}
                                     </button>
