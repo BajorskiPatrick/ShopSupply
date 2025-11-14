@@ -25,7 +25,7 @@ const DisplayItems = ({selectedCategory}) => {
             </div>
             <div className="row g-3">
                 {filteredItems.map((item, index) => (
-                    <div key={index} className="col-md-4 col-sm-6">
+                    <div key={index} className="col-md-6">
                         <Item
                             name={item.name}
                             price={item.price}

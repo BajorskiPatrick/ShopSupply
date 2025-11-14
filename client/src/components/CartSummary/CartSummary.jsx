@@ -92,7 +92,7 @@ const CartSummary = ({customerName, setCustomerName, phoneNumber, setPhoneNumber
     }
 
     return (
-        <div className="mt-2">
+        <div className="mt-2 pb-3">
             <div className="cart-summary-details">
                 <div className="d-flex justify-content-between mb-2">
                     <span className="text-light">Items: </span>

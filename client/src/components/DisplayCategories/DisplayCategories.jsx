@@ -5,7 +5,7 @@ import {assets} from "../../assets/assets.js";
 const DisplayCategories = ({categories, selectedCategory, setSelectedCategory}) => {
     return (
         <div className="row g-3 display-categories-container">
-            <div key="all" className="col-md-3 col-sm-6 category-component-container" style={{padding:'0 10px'}}>
+            <div key="all" className="col-md-6 category-component-container">
                 <Category
                     categoryName="All Items"
                     imgUrl={assets.device}
@@ -16,7 +16,7 @@ const DisplayCategories = ({categories, selectedCategory, setSelectedCategory}) 
                 />
             </div>
             {categories.map((category, index) => (
-                <div key={index} className="col-md-3 col-sm-6">
+                <div key={index} className="col-md-6 category-component-container">
                     <Category
                         categoryName={category.name}
                         imgUrl={category.imgUrl}

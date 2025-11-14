@@ -87,7 +87,7 @@ const Explore = () => {
                 </div>
             </div>
             <div className="right-column d-flex flex-column">
-                <div className="customer-form-container" style={{height: '15%'}}>
+                <div className="customer-form-container">
                     <CustomerForm
                         customerName={customerName}
                         setCustomerName={setCustomerName}
@@ -95,12 +95,12 @@ const Explore = () => {
                         setPhoneNumber={setPhoneNumber}
                     />
                 </div>
-                <hr className="my-3 text-light border-3" />
-                <div className="cart-items-container" style={{height: '55%', overflowY: 'auto'}}>
+                <hr className="my-3 text-light border-3"/>
+                <div className="cart-items-container">
                     <CartItems />
                 </div>
-                <hr className="my-3 text-light border-3" />
-                <div className="cart-summary-container" style={{height: '30%'}}>
+                <hr className="my-3 text-light border-3"/>
+                <div className="cart-summary-container">
                     <CartSummary
                         customerName={customerName}
                         setCustomerName={setCustomerName}
